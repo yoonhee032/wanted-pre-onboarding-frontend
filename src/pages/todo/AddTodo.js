@@ -1,0 +1,63 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import server from "./../../config/server.json";
+
+let AddTodo = () => {
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+
+  const [todoState, setTodoState] = useState({
+    todo: "",
+  });
+
+  let changeModalData = (e) => {
+    console.log(e.target.value);
+    setTodoState({
+      ...todoState,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  //투두를 작성하여 보내는 함수
+  let createTodo = async () => {
+    console.log("투두", todoState);
+    if (todoState.todo === "") {
+      alert("내용을 입력해주세요.");
+      return;
+    }
+
+    return await // https://pre-onboarding-selection-task.shop/todos
+    axios.post(server.url + "/todos", todoState, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  };
+
+  return (
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        className="form-control"
+        placeholder="할일을 입력하세요"
+        value={todoState.todo}
+        name="todo"
+        onChange={changeModalData}
+      />
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        id="button-addon2"
+        onClick={() => {
+          createTodo().then((res) => {
+            console.log(res);
+          });
+        }}
+      >
+        추가
+      </button>
+    </div>
+  );
+};
+export default AddTodo;
