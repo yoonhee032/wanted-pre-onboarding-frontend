@@ -11,7 +11,7 @@ let AddTodo = () => {
     todo: "",
   });
 
-  let changeModalData = (e) => {
+  let changeInputData = (e) => {
     console.log(e.target.value);
     setTodoState({
       ...todoState,
@@ -43,15 +43,20 @@ let AddTodo = () => {
         placeholder="할일을 입력하세요"
         value={todoState.todo}
         name="todo"
-        onChange={changeModalData}
+        onChange={changeInputData}
       />
       <button
-        class="btn btn-outline-secondary"
+        className="btn btn-outline-secondary"
         type="button"
         id="button-addon2"
         onClick={() => {
           createTodo().then((res) => {
-            console.log(res);
+            console.log("응답", res.status);
+            if (res.status) {
+              window.location.reload();
+            }
+          }).catch(err => {
+            console.log(err)
           });
         }}
       >

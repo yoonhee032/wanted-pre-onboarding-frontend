@@ -13,6 +13,7 @@ let List = () => {
   const [todoList, setTodoList] = useState([]);
 
   const [todoData, setTodoData] = useState({
+    kind: "",
     todo: "",
     userId: 0,
     id: 0,
@@ -49,17 +50,77 @@ let List = () => {
     });
   };
 
+  //일기장을 삭제하는 서버 요청 함수 http://localhost:8080/todos/:id
+  let deleteTodo = async (id, todo) => {
+    if (window.confirm(`${todo}를 삭제하시겠습니까?`)) {
+      return await axios.delete(`${server.url}/todos/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    }
+  };
+
   return (
-    <ul className="list-group">
-      <AddTodo></AddTodo>
-      {todoList.map((data) => (
-        <div className="col" key={data.id}>
-          <div className="card shadow-sm">
-            <Item data={data} />
-          </div>
+    <main>
+      <div className="container text-center m-5 p-2 rounded mx-auto bg-light shadow">
+        <h1 className="fw-bold"> todoList </h1>
+        <p className="lead text-muted">Hi</p>
+        <AddTodo todoData={todoData} ></AddTodo>
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+          <ul className="list-group">
+            {todoList.map((data) => (
+              <div className="col" key={data.id}>
+                <div className="card shadow-sm">
+                  <Item data={data} />
+                </div>
+                <div className="d-flex justify-content-between align-items-center">
+                  <div className="btn-group">
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-secondary"
+                      onClick={() => {
+                        //일기장 수정 버튼을 눌렀을 경우,
+                        //수정을 원하는 일기장의 정보를 저장함
+                        setTodoData({
+                          id: data.id,
+                          kind: "isEdit",
+                          todo: data.todo,
+                          isCompleted: data.isCompleted,
+                          userId: data.userId,
+                        });
+                        console.log("수정", todoData);
+                      }}
+                    >
+                      수정
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-secondary"
+                      onClick={() => {
+                        //삭제를 시키는 실질적인 코드
+                        deleteTodo(data.id, data.todo)
+                          .then((res) => {
+                            console.log("삭제", res);
+                            if (res.data.status) {
+                            }
+                            window.location.reload();
+                          })
+                          .catch((err) => {
+                            console.log(err);
+                          });
+                      }}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </ul>
         </div>
-      ))}
-    </ul>
+      </div>
+    </main>
   );
 };
 export default List;
