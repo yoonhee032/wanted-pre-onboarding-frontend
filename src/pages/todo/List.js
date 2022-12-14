@@ -10,7 +10,7 @@ let List = () => {
   const navigate = useNavigate();
 
   //투두 리스트 담아두는 곳
-  const [todoList, setTodoList] = useState([]);
+  const [todoList, setTodoList] = useState([]); //배열로 초기화
 
   const [todoData, setTodoData] = useState({
     kind: "",
@@ -41,6 +41,26 @@ let List = () => {
 
   console.log(todoList);
 
+  let changeTodoData = (e) => {
+    console.log(e.target.value);
+    setTodoData({
+      ...todoData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const completeBtn = (data) => {
+    console.log("데이터 아이디", data.id);
+    setTodoList(
+      todoList.map((item) => {
+        if (item.id === data.id) {
+          item.isCompleted = !item.isCompleted;
+        }
+        return item;
+      })
+    );
+  };
+
   //투두 리스트를 가져오는 서버 요청 함수 https://pre-onboarding-selection-task.shop/auth/todos
   let getListTodos = async () => {
     return await axios.get(server.url + "/todos", {
@@ -50,10 +70,11 @@ let List = () => {
     });
   };
 
-  //일기장을 삭제하는 서버 요청 함수 http://localhost:8080/todos/:id
+  //일기장을 삭제하는 서버 요청 함수
   let deleteTodo = async (id, todo) => {
     if (window.confirm(`${todo}를 삭제하시겠습니까?`)) {
-      return await axios.delete(`${server.url}/todos/${id}`, {
+      return await //http://localhost:8080/todos/:id
+      axios.delete(`${server.url}/todos/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -66,7 +87,7 @@ let List = () => {
       <div className="container text-center m-5 p-2 rounded mx-auto bg-light shadow">
         <h1 className="fw-bold"> todoList </h1>
         <p className="lead text-muted">Hi</p>
-        <AddTodo todoData={todoData} ></AddTodo>
+        <AddTodo todoData={todoData} changeTodoData={changeTodoData}></AddTodo>
         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
           <ul className="list-group">
             {todoList.map((data) => (
@@ -76,6 +97,13 @@ let List = () => {
                 </div>
                 <div className="d-flex justify-content-between align-items-center">
                   <div className="btn-group">
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-secondary"
+                      onClick={() => completeBtn(data)}
+                    >
+                      완료
+                    </button>
                     <button
                       type="button"
                       className="btn btn-sm btn-outline-secondary"
