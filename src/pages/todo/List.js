@@ -13,7 +13,7 @@ let List = () => {
   const [todoList, setTodoList] = useState([]); //배열로 초기화
 
   const [todoData, setTodoData] = useState({
-    kind: "",
+    isEdit: false,
     todo: "",
     userId: 0,
     id: 0,
@@ -39,16 +39,30 @@ let List = () => {
       });
   }, []);
 
-  console.log(todoList);
-
+  //input값을 변경할 때, 각 input name에 맞는 value값을 넣어줌.
   let changeTodoData = (e) => {
-    console.log(e.target.value);
     setTodoData({
       ...todoData,
       [e.target.name]: e.target.value,
     });
   };
 
+  let isEdit = (data) => {
+    setTodoData({
+      isEdit: true,
+      todo: data.todo,
+      userId: data.userId,
+      id: data.id,
+      isCompleted: data.isCompleted,
+    });
+  };
+
+  const editBtn = (data) => {
+    //수정 버튼 클릭시 isEdit 실행
+    isEdit(data);
+  };
+
+  //완료 버튼 토글기능 함수
   const completeBtn = (data) => {
     console.log("데이터 아이디", data.id);
     setTodoList(
@@ -70,11 +84,10 @@ let List = () => {
     });
   };
 
-  //일기장을 삭제하는 서버 요청 함수
+  //일기장을 삭제하는 서버 요청 함수 //http://localhost:8080/todos/:id
   let deleteTodo = async (id, todo) => {
     if (window.confirm(`${todo}를 삭제하시겠습니까?`)) {
-      return await //http://localhost:8080/todos/:id
-      axios.delete(`${server.url}/todos/${id}`, {
+      return await axios.delete(`${server.url}/todos/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -88,63 +101,36 @@ let List = () => {
         <h1 className="fw-bold"> todoList </h1>
         <p className="lead text-muted">Hi</p>
         <AddTodo todoData={todoData} changeTodoData={changeTodoData}></AddTodo>
-        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-          <ul className="list-group">
-            {todoList.map((data) => (
-              <div className="col" key={data.id}>
-                <div className="card shadow-sm">
-                  <Item data={data} />
-                </div>
-                <div className="d-flex justify-content-between align-items-center">
-                  <div className="btn-group">
+        <div className="row p-3">
+          <ul className="col">
+            {
+              //가져온 투두 리스트를 보여주는 코드
+              todoList.map((data) => (
+                <div className="col p-3" key={data.id}>
+                  <div className="col-3 d-flex">
                     <button
                       type="button"
-                      className="btn btn-sm btn-outline-secondary"
+                      className="btn btn-outline-primary"
                       onClick={() => completeBtn(data)}
                     >
                       완료
                     </button>
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-outline-secondary"
-                      onClick={() => {
-                        //일기장 수정 버튼을 눌렀을 경우,
-                        //수정을 원하는 일기장의 정보를 저장함
-                        setTodoData({
-                          id: data.id,
-                          kind: "isEdit",
-                          todo: data.todo,
-                          isCompleted: data.isCompleted,
-                          userId: data.userId,
-                        });
-                        console.log("수정", todoData);
-                      }}
-                    >
-                      수정
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-outline-secondary"
-                      onClick={() => {
-                        //삭제를 시키는 실질적인 코드
-                        deleteTodo(data.id, data.todo)
-                          .then((res) => {
-                            console.log("삭제", res);
-                            if (res.data.status) {
-                            }
-                            window.location.reload();
-                          })
-                          .catch((err) => {
-                            console.log(err);
-                          });
-                      }}
-                    >
-                      삭제
-                    </button>
+                    
+                    <Item
+                      data={data}
+                      completeBtn={completeBtn}
+                      editBtn={editBtn}
+                      deleteTodo={deleteTodo}
+                      todoData={todoData}
+                      setTodoData={setTodoData}
+                    />
+                  </div>
+                  <div className="d-flex justify-content-between align-items-center">
+                    
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+            }
           </ul>
         </div>
       </div>

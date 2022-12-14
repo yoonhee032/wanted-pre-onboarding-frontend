@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import server from "./../../config/server.json";
 
-let AddTodo = ({ todoData }) => {
+let AddTodo = ({todoData}) => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
@@ -36,6 +36,8 @@ let AddTodo = ({ todoData }) => {
   };
 
   return (
+    <>
+    
     <div className="input-group mb-3">
       <input
         type="text"
@@ -50,21 +52,20 @@ let AddTodo = ({ todoData }) => {
         type="button"
         id="button-addon2"
         onClick={() => {
-          createTodo()
-            .then((res) => {
-              console.log("응답", res.status);
-              if (res.status) {
-                window.location.reload();
-              }
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+          createTodo().then((res) => {
+            console.log("응답", res.status);
+            if (res.status) {
+              window.location.reload();
+            }
+          }).catch(err => {
+            console.log(err)
+          });
         }}
       >
         추가
       </button>
     </div>
+    </>
   );
 };
 export default AddTodo;
