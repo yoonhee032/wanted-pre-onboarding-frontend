@@ -6,5 +6,8 @@
 $ npm start
 `
 
-https://user-images.githubusercontent.com/105180536/207628741-e73bfad0-a1e2-405d-86b2-4a198e25648f.mp4
+<p align="center">
+<img src="![ezgif com-gif-maker](https://user-images.githubusercontent.com/105180536/207633882-c9f65432-373e-4a56-a5e7-1aa6bdce2eb6.gif)"
+</p>
+
 
