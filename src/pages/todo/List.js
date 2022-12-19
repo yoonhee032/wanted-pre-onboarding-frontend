@@ -99,7 +99,7 @@ let List = () => {
     <main>
       <div className="container text-center m-5 p-2 rounded mx-auto bg-light shadow">
         <h1 className="fw-bold"> todoList </h1>
-        <p className="lead text-muted">Hi</p>
+        <p className="lead text-muted">할 일을 입력하세요👍</p>
         <AddTodo todoData={todoData} changeTodoData={changeTodoData}></AddTodo>
         <div className="row p-3">
           <ul className="col">
