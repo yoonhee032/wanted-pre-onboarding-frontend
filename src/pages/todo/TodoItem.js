@@ -1,22 +1,20 @@
 import styled from "styled-components";
 
 import { useNavigate } from "react-router-dom";
-import AddTodo from "./AddTodo";
 import { useEffect, useState } from "react";
 
 import axios from "axios";
 import server from "../../config/server.json";
-import TestTodo from "./TodoList";
 import Button from "../../components/Button";
 
-import { MDBIcon, MDBBtn } from "mdb-react-ui-kit";
+import { MDBIcon, MDBBtn, MDBInput } from "mdb-react-ui-kit";
 
 let Title = styled.div`
   text-decoration: line-through;
 `;
 
 let TodoItem = ({ data, todoList, setTodoList }) => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   const [editMode, setEditMode] = useState(false); //수정모드
   const [editTodo, setEditTodo] = useState({
@@ -131,24 +129,27 @@ let TodoItem = ({ data, todoList, setTodoList }) => {
       {editMode ? (
         //수정모드 input
         <>
+        <th>
           <input
             type="text"
-            className="todo-edit-input"
+            className="form-control align-items-center"
+            size='sm'
             name="todo"
             value={editTodo.todo}
             onChange={handleEditInput}
           />
+          </th>
         </>
       ) : (
         //읽기모드
         <>
-          <th> {editTodo.todo} </th>
+          <th className="align-items-center"><h6> {editTodo.todo} </h6></th>
         </>
       )}
       {/* 수정 버튼 */}
       {editMode ? (
         <>
-          <th>
+          <th >
             {/* 수정 저장 버튼 */}
             <MDBBtn
               type="submit"

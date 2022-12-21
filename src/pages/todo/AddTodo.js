@@ -5,7 +5,7 @@ import server from "./../../config/server.json";
 import { MDBBtn, MDBCol, MDBInput, MDBInputGroup } from "mdb-react-ui-kit";
 
 let AddTodo = ({ todoData }) => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const navigate = useNavigate();
 
   const [todoState, setTodoState] = useState({

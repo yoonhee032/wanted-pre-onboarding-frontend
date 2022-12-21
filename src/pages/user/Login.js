@@ -76,7 +76,7 @@ let Login = () => {
                 //로그인에대한 응답 처리
                 console.log(res.data.access_token);
                 if (res.data.access_token) {
-                  localStorage.setItem("token", res.data.access_token);
+                  sessionStorage.setItem("token", res.data.access_token);
                   navigate("/todo");
                 } else {
                   //로그인 실패

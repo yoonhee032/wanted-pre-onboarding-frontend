@@ -3,13 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 let Header = () => {
 
    //토큰 사용
-    const token = localStorage.getItem("token")
+    const token = sessionStorage.getItem("token")
     const navigate = useNavigate();
 
     //로그아웃 버튼을 눌렀을 경우,
-    //localstorage에서 토큰 삭제
+    //sessionStorage 토큰 삭제
     let logOutBtn = () => {
-        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
         //그 후 home페이지로 이동
         navigate("/");
     }
@@ -47,7 +47,7 @@ let Header = () => {
                             justifyContent: "space-between"
                         }}>
                             {
-                                //만약 localStorage에 token이 존재하지 않는다면 로그아웃 버튼을 보여주지 않음.
+                                //만약 sessionStorage token이 존재하지 않는다면 로그아웃 버튼을 보여주지 않음.
                                    token === null ? (<></>) : (
                                     <button className="btn btn-danger" onClick={logOutBtn}>로그아웃</button>
                                 )

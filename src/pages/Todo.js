@@ -21,9 +21,10 @@ import {
   MDBTableHead,
 } from "mdb-react-ui-kit";
 import TestTodo from "./todo/TodoList";
+import TodoList from "./todo/TodoList";
 
 export default function Todo() {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const navigate = useNavigate();
 
   const [todoList, setTodoList] = useState([]); //배열로 초기화
@@ -42,14 +43,14 @@ export default function Todo() {
                 </MDBRow>
 
                 {/* 할 일 item 리스트 */}
-                <TestTodo
+                <TodoList
                   todoList={todoList}
                   setTodoList={setTodoList}
                   checkedList={false}
                 />
 
                 {/* 완료한 item 리스트 */}
-                <TestTodo
+                <TodoList
                   todoList={todoList}
                   setTodoList={setTodoList}
                   checkedList={false}

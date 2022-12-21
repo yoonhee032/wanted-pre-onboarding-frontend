@@ -22,7 +22,7 @@ import {
 } from "mdb-react-ui-kit";
 
 export default function TodoList() {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const navigate = useNavigate();
 
   const [todoList, setTodoList] = useState([]); //배열로 초기화
@@ -54,6 +54,8 @@ export default function TodoList() {
       },
     });
   };
+
+  
 
   return (
     <section className="vh-100" style={{ backgroundColor: "#eee" }}>
