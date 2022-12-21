@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import server from "./../../config/server.json";
 
-let SignUp = () => {
+let SignUp = ({setStatus}) => {
+  const navigate = useNavigate();
   const [signUpData, setSignUpData] = useState({
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [errorMsg, setErrorMsg] = useState("");
@@ -25,7 +28,10 @@ let SignUp = () => {
 
   const isValidEmail =
     signUpData.email.includes("@") && signUpData.email.includes(".");
+
   const isValidPassword = signUpData.password.length >= 8;
+
+  const isValidConfirmPassword = signUpData.password === signUpData.confirmPassword
 
 
   // 유효성 검사 후 서버에 요청
@@ -50,6 +56,15 @@ let SignUp = () => {
       return;
     }
 
+    if (!isValidConfirmPassword){
+      alert("비밀번호를 확인해주세요");
+      return;
+    }
+
+    delete signUpData.confirmPassword;
+
+    console.log(signUpData)
+
     return await axios.post(server.url + "/auth/signup", signUpData);
   };
 
@@ -65,7 +80,7 @@ let SignUp = () => {
             value={signUpData.email}
             onChange={changeSignUpData}
             className="form-control"
-            name={"email"}
+            name="email"
             id="email"
           />
         </div>
@@ -82,6 +97,19 @@ let SignUp = () => {
             id="password"
           />
         </div>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
+            비밀번호 확인
+          </label>
+          <input
+            type="password"
+            value={signUpData.confirmPassword}
+            onChange={changeSignUpData}
+            className="form-control"
+            name="confirmPassword"
+            id="confirmPassword"
+          />
+        </div>
 
         <div className="mb-3">
           <p className="text-danger">{errorMsg}</p>
@@ -92,14 +120,18 @@ let SignUp = () => {
             clickSignUpBtn()
               .then((res) => {
                 console.log(res);
-                if (res.data.status) {
-                  alert(res.data.message);
-                  window.location.reload();
+                if (res.status) {
+                  alert("회원가입이 완료되었습니다.");
+                  setStatus({
+                    login: true,
+                    signUp: false,
+                  });
                 } else {
                   setErrorMsg(res.data.message);
                   setSignUpData({
                     email: "",
                     password: "",
+                    confirmPassword:"",
                   });
                 }
               })

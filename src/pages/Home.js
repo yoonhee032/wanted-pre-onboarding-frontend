@@ -45,7 +45,7 @@ let Home = () => {
         </div>
       </section>
       <div className={"container"}>
-        {status.signUp === true ? <SignUp /> : <></>}
+        {status.signUp === true ? <SignUp setStatus={setStatus}/> : <></>}
         {status.login === true ? <Login /> : <></>}
       </div>
     </main>
