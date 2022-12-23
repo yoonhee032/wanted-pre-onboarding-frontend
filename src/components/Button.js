@@ -11,10 +11,6 @@ export default function Button({ func, data, icon, color }) {
         onClick={() => {
           func(data.id, data.todo)
             .then((res) => {
-              console.log("dd")
-              console.log("삭제", res);
-              if (res.data.status) {
-              }
               window.location.reload();
             })
             .catch((err) => {
@@ -22,7 +18,7 @@ export default function Button({ func, data, icon, color }) {
             });
         }}
       >
-        <MDBIcon fas icon={icon} size="xs"/>
+        <MDBIcon fas icon={icon} size="xs" />
       </MDBBtn>
     </>
   );

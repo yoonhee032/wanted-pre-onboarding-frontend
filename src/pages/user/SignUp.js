@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import server from "./../../config/server.json";
 
 let SignUp = ({setStatus}) => {
-  const navigate = useNavigate();
   const [signUpData, setSignUpData] = useState({
     email: "",
     password: "",

@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import TestTodo from "./pages/todo/TodoList";
+import TodoList from "./pages/todo/TodoList";
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/todo" element={<TestTodo />} />
+          <Route path="/todo" element={<TodoList />} />
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -25,7 +25,7 @@ let TodoItem = ({ data, todoList, setTodoList }) => {
   });
 
   useEffect(() => {
-    editSubmitBtn()
+    editSubmitBtn();
   }, [editTodo.isCompleted]);
 
   //input 변화 감지
@@ -43,19 +43,22 @@ let TodoItem = ({ data, todoList, setTodoList }) => {
 
   const onClickCancelButton = () => {
     setEditMode(false);
-    setEditTodo(data.todo);
+    setEditTodo({
+      id: editTodo.id,
+      todo: editTodo.todo,
+      isCompleted: editTodo.isCompleted,
+    });
   };
 
   //완료 버튼 토글기능 함수
   const completeBtn = (data) => {
-      setEditTodo({
-        id: data.id,
-        todo: data.todo,
-        isCompleted: !data.isCompleted,
-  })
-  editSubmitBtn()
-  }
-
+    setEditTodo({
+      id: data.id,
+      todo: data.todo,
+      isCompleted: !data.isCompleted,
+    });
+    editSubmitBtn();
+  };
 
   const editSubmitBtn = () => {
     updateTodo(editTodo.id)
@@ -68,8 +71,7 @@ let TodoItem = ({ data, todoList, setTodoList }) => {
       .catch((err) => {
         console.log(err);
       });
-    };
- 
+  };
 
   let updateTodo = async (id) => {
     if (editTodo === "") {
