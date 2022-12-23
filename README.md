@@ -66,7 +66,7 @@ $ npm start
 
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/105180536/207634811-95db0a84-a868-4afc-bed5-90e16f4be336.gif">
+<img src="https://user-images.githubusercontent.com/105180536/209271667-326d795d-a69b-48c7-b4b5-4cfd5fb41743.gif">
 </p>
 
 
