@@ -8,6 +8,7 @@ import server from "../../config/server.json";
 import Button from "../../components/Button";
 
 import { MDBIcon, MDBBtn, MDBInput } from "mdb-react-ui-kit";
+import TodoList from "./TodoList";
 
 let Title = styled.div`
   text-decoration: line-through;
@@ -24,9 +25,8 @@ let TodoItem = ({ data, todoList, setTodoList }) => {
   });
 
   useEffect(() => {
-    console.log("데이터", data);
-    console.log("에딧", editTodo);
-  }, []);
+    editSubmitBtn()
+  }, [editTodo.isCompleted]);
 
   //input 변화 감지
   const handleEditInput = (e) => {
@@ -48,15 +48,14 @@ let TodoItem = ({ data, todoList, setTodoList }) => {
 
   //완료 버튼 토글기능 함수
   const completeBtn = (data) => {
-    setTodoList(
-      todoList.map((item) => {
-        if (item.id === data.id) {
-          item.isCompleted = !item.isCompleted;
-        }
-        return item;
-      })
-    );
-  };
+      setEditTodo({
+        id: data.id,
+        todo: data.todo,
+        isCompleted: !data.isCompleted,
+  })
+  editSubmitBtn()
+  }
+
 
   const editSubmitBtn = () => {
     updateTodo(editTodo.id)
@@ -69,7 +68,8 @@ let TodoItem = ({ data, todoList, setTodoList }) => {
       .catch((err) => {
         console.log(err);
       });
-  };
+    };
+ 
 
   let updateTodo = async (id) => {
     if (editTodo === "") {
@@ -100,14 +100,14 @@ let TodoItem = ({ data, todoList, setTodoList }) => {
   return (
     <>
       <th className="align-items-center">
-        {data.isCompleted ? (
+        {editTodo.isCompleted ? (
           <MDBBtn
             type="submit"
             outline
             floating
             color="success"
             onClick={() => {
-              completeBtn(data);
+              completeBtn(editTodo);
             }}
           >
             <MDBIcon fas icon="check" size="xs" />
@@ -119,7 +119,7 @@ let TodoItem = ({ data, todoList, setTodoList }) => {
             floating
             color="secondary"
             onClick={() => {
-              completeBtn(data);
+              completeBtn(editTodo);
             }}
           >
             <MDBIcon fas icon="check" size="xs" />
@@ -129,27 +129,29 @@ let TodoItem = ({ data, todoList, setTodoList }) => {
       {editMode ? (
         //수정모드 input
         <>
-        <th>
-          <input
-            type="text"
-            className="form-control align-items-center"
-            size='sm'
-            name="todo"
-            value={editTodo.todo}
-            onChange={handleEditInput}
-          />
+          <th>
+            <input
+              type="text"
+              className="form-control align-items-center"
+              size="sm"
+              name="todo"
+              value={editTodo.todo}
+              onChange={handleEditInput}
+            />
           </th>
         </>
       ) : (
         //읽기모드
         <>
-          <th className="align-items-center"><h6> {editTodo.todo} </h6></th>
+          <th className="align-items-center">
+            <h6> {editTodo.todo} </h6>
+          </th>
         </>
       )}
       {/* 수정 버튼 */}
       {editMode ? (
         <>
-          <th >
+          <th>
             {/* 수정 저장 버튼 */}
             <MDBBtn
               type="submit"
@@ -165,6 +167,7 @@ let TodoItem = ({ data, todoList, setTodoList }) => {
               type="submit"
               rounded
               color="danger"
+              className="ms-1"
               onClick={onClickCancelButton}
             >
               <MDBIcon fas icon="chevron-left" size="xs" />

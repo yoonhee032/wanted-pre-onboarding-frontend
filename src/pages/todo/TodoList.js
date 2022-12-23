@@ -55,8 +55,6 @@ export default function TodoList() {
     });
   };
 
-  
-
   return (
     <section className="vh-100" style={{ backgroundColor: "#eee" }}>
       <MDBContainer className="py-5 h-100">
@@ -84,9 +82,8 @@ export default function TodoList() {
                     {
                       //가져온 투두 리스트를 보여주는 코드
                       todoList.map((data) => (
-                        <tr>
+                        <tr key={data.id}>
                           <TestItem
-                            key={data.id}
                             data={data}
                             todoList={todoList}
                             setTodoList={setTodoList}
